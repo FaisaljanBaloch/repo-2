@@ -1,5 +1,43 @@
 ---
-title: "Untitled"
+title: "A Beautiful Graphic"
+author: "Faisal Jan"
 format: html
+execute:
+  echo: false
 ---
 
+```{r}
+suppressPackageStartupMessages(library(tidyverse))
+```
+
+```{r}
+# Create the beautiful graphic
+ggplot(mpg, aes(x = displ, y = hwy, color = class)) +
+  geom_point(alpha = 0.8, size = 3) + # Add points, make them slightly transparent and larger
+  geom_smooth(method = "lm", se = FALSE, color = "black", linetype = "dashed") + # Add a linear model trend line
+  facet_wrap(
+    ~drv,
+    labeller = as_labeller(c(
+      "4" = "4-wheel drive",
+      "f" = "Front-wheel drive",
+      "r" = "Rear-wheel drive"
+    ))
+  ) + # Separate by drive type
+  labs(
+    title = "Fuel Efficiency by Engine Displacement and Drive Type",
+    subtitle = "Analysis of US EPA Fuel Economy Data (1999-2008)",
+    x = "Engine Displacement (Liters)",
+    y = "Highway Miles Per Gallon (MPG)",
+    color = "Car Class"
+  ) +
+  scale_color_brewer(palette = "Set2") + # Use a pleasant color palette
+  theme_minimal(base_size = 14) + # Use a clean, minimal theme with a slightly larger base font
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 18), # Center and bold title
+    plot.subtitle = element_text(hjust = 0.5, size = 12, color = "gray50"), # Center subtitle
+    axis.title = element_text(face = "bold"), # Bold axis titles
+    legend.position = "right", # Position legend
+    panel.grid.minor = element_blank(), # Remove minor grid lines
+    strip.text = element_text(face = "bold") # Bold facet labels
+  )
+```
